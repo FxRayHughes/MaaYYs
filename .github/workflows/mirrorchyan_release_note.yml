@@ -11,6 +11,8 @@ on:
 
 jobs:
   mirrorchyan_mxu:
+    # 仅在上游仓库运行；fork 无 MirrorChyan 上传密钥
+    if: ${{ github.repository_owner == 'TanyaShue' }}
     runs-on: ubuntu-latest
     steps:
       - id: uploading
