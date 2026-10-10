@@ -1,0 +1,43 @@
+# 自定义脚本示例：在庭院随机点击并等待
+# 脚本名称即所在文件夹名；语法说明见上级目录 README.md
+description: 演示随机点击、随机延迟、条件阻塞、失败重试与循环
+# 默认执行次数（任务选项中填写 0 时使用此值）
+repeat: 1
+# 整轮失败重试：任一步骤失败时重新执行本轮
+retry:
+  times: 1
+  interval: 2s
+# 录制时的截图分辨率，执行时按实际分辨率等比缩放坐标
+resolution:
+  width: 1280
+  height: 720
+steps:
+  - log: 开始执行示例脚本
+  # 在圆心 (640, 360)、半径 30 的圆内随机点击
+  - click:
+      x: 640
+      y: 360
+      r: 30
+  - random_wait:
+      min: 1s
+      max: 2s
+  # 条件阻塞：画面出现「庭院」才继续，3 秒未出现则跳过；失败时额外重试 2 次
+  - wait_text:
+      text: 庭院
+      timeout: 3s
+      on_timeout: skip
+    retry:
+      times: 2
+      interval: 1s
+  - repeat:
+      times: 2
+      steps:
+        - click:
+            x: 600
+            y: 320
+            w: 80
+            h: 80
+        - random_wait:
+            min: 500ms
+            max: 1s
+  - log: 示例脚本完成

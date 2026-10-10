@@ -46,6 +46,8 @@ env:
 jobs:
   meta:
     name: Prepare metadata
+    # 仅在上游仓库运行；fork 仓库手动构建发布，避免误触发上传
+    if: ${{ github.repository_owner == 'TanyaShue' }}
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.set_tag.outputs.tag }}
@@ -137,7 +139,7 @@ jobs:
   build:
     name: Build ${{ matrix.os }}-${{ matrix.arch }}
     needs: [meta, update-version]
-    if: ${{ always() && !cancelled() && (needs.update-version.result == 'success' || needs.update-version.result == 'skipped') }}
+    if: ${{ always() && !cancelled() && needs.meta.result == 'success' && (needs.update-version.result == 'success' || needs.update-version.result == 'skipped') }}
     runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
@@ -267,7 +269,7 @@ jobs:
           cp "$mxu_file" "package/${{ matrix.executable }}"
           chmod +x "package/${{ matrix.executable }}" 2>/dev/null || true
 
-          for item in assets preset resource_pack tasks interface.json LICENSE README.md; do
+          for item in assets preset resource_pack tasks custom_scripts interface.json LICENSE README.md; do
             if [ -e "$item" ]; then
               cp -rp "$item" package/
             else
@@ -503,7 +505,7 @@ jobs:
   android:
     name: Build Android APK
     needs: [meta, update-version]
-    if: ${{ always() && !cancelled() && (needs.update-version.result == 'success' || needs.update-version.result == 'skipped') }}
+    if: ${{ always() && !cancelled() && needs.meta.result == 'success' && (needs.update-version.result == 'success' || needs.update-version.result == 'skipped') }}
     runs-on: ubuntu-latest
     outputs:
       variant: ${{ steps.signing.outputs.variant }}
