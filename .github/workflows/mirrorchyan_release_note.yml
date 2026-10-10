@@ -27,6 +27,7 @@ jobs:
           upload_token: ${{ secrets.MirrorChyanUploadToken }}
 
   mirrorchyan_exec:
+    if: ${{ github.repository_owner == 'TanyaShue' }}
     runs-on: ubuntu-latest
     steps:
       - id: uploading
