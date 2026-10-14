@@ -148,6 +148,25 @@ MuMu 可在设置或设备诊断中查看端口；雷电多开端口通常随实
 
 </details>
 
+## 进阶功能
+
+<details>
+<summary>如何让脚本自行启动模拟器</summary>
+
+1. 在脚本中添加自定义任务：前置程序
+   - 关闭“已运行时跳过”选项的开关
+   ![点击添加任务.png](https://ldimg.ldcstore.com/miaojiuqing/20261010_点击添加任务_jq3uv2.png)
+2. 在“程序路径”中选择模拟器的 exe 文件，并在“程序参数”中填写对应的启动参数
+   - 常见模拟器参数：
+     - MuMu：`-v <模拟器序号 - 1>`，即第一台为 `-v 0`、第二台为 `-v 1`，依次类推
+     - 雷电：默认实例可不带参数；需要指定多开实例时，用 `ldconsole.exe` 配合参数 `launch --index <序号>`
+     - PlayCover（macOS）：通常无需参数，若要启动应用可填 `open -a PlayCover`
+   - 以 MuMu 为例：
+   ![前置程序配置.png](https://ldimg.ldcstore.com/miaojiuqing/20261010_前置程序配置_ybqq2e.png)
+3. 在“前置程序”之后添加“倒计时”任务，等待模拟器完全启动（常见 30 秒以上，视机器速度调整）
+
+</details>
+
 ## 开发说明
 
 <details>
@@ -322,4 +341,4 @@ ci: 调整发布流程
 
 ## 许可
 
-本项目使用 [MIT License](LICENSE) 发布。
+本项目使用 [MIT License](LICENSE) 发布
